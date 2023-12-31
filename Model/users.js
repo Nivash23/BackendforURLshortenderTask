@@ -4,6 +4,11 @@ const userSchema = new mongoose.Schema({
     username: String,
     name:String,
     passwordHash: String,
+    entries: {
+        type:Array,
+        default: [],
+        ref:"entry"
+    },
     createdAt: {
         type: Date,
         default: Date.now()
