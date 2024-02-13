@@ -1,52 +1,39 @@
 const userRouter = require('express').Router();
 const bcrypt = require('bcrypt');
 const User = require('../Model/users');
-const nodemailer = require('nodemailer');
+const  sendActivationMail = require('./sendingmail');
+const crypto = require('crypto');
 
 
 userRouter.post('/', async (req, res) => {
-    const { username, name, password } = req.body;
-        
-        const passwordHash = await bcrypt.hash(password, 10);
-    
+
+    const { username, name, password } = req.body; 
+    const isuser = await User.findOne({ username });
+    const passwordHash = await bcrypt.hash(password, 10);
+    const ActivationToken = await crypto.randomBytes(20).toString('hex');
+    if (isuser)
+    {
+        return res.status(404).json({message: 'User already exist'})
+        }
         const user = new User({
             username,
             name,
             passwordHash,
+            ActivationToken,
         });
-     const html = `
-    <h1>Hello</h1>
-    <p>Welcome to our website,${name}</p>
-    `
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'billanivash52@gmail.com',
-            pass: 'yglubdayulcahfhr'
-        }
-    });
-    const mailOption = {
-        from: 'billanivash52@gmail.com',
-        to: `${username}`,
-        subject: 'MailFromWebsite',
-        html:html,
-    }
+    const Activationlink=`https://www.Accountactivation.com/`
     if (user)
     {
-        transporter.sendMail(mailOption, function (err, info) {
-            if (err)
-            {
-                console.log(err);
-            }
-            else {
-                console.log(info.response);
-            }
-       })
-        }
+        sendActivationMail(username, Activationlink, name,ActivationToken);  
+    }
         const saveduser = await user.save();
     
-        res.status(200).json(saveduser);
+    res.status(200).json({
+        saveduser
+    });
+    
 
 });
+
 
 module.exports = userRouter;

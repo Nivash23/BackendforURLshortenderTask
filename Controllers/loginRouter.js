@@ -13,6 +13,10 @@ LoginRouter.post("/", async (req, res) => {
       message: "user does not exists..",
     });
   }
+  if (!user.isActive)
+  {
+    return res.status(403).json({message:'Your has not been Active so you can not login'})
+    }
   const isAuthenticate = await bcrypt.compare(password, user.passwordHash);
   if (!isAuthenticate) {
     return res.status(401).json({
@@ -28,7 +32,8 @@ LoginRouter.post("/", async (req, res) => {
     token,
     username: user.username,
     name: user.name,
-    id:user._id,
+    id: user._id,
+    user
   });
 });
 module.exports = LoginRouter;
