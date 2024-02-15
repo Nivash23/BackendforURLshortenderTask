@@ -17,7 +17,9 @@ app.use(cors())
 //     next();
 // })
 
-
+app.get('/', (req, res) => {
+  res.status(200).json({message:"my server is working properly"})
+})
 app.use(express.json());
 app.use('/api/users', userRouter);
 app.use('/api/Login', loginRouter);
