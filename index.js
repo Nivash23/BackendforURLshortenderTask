@@ -9,11 +9,10 @@ mongoose.connect(MONGODB_URI)
     .then(() => {
         console.log('Connected sucessfully..');
 
-        app.listen(PORT, () => {
-            console.log(`Server listening ...`);
-        })
-
     })
     .catch((error) => {
         console.log(error);
     });
+    app.listen(PORT, () => {
+            console.log(`Server listening ...`);
+     })
