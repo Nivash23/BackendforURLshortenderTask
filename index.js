@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const app = require('./app');
-const { MONGODB_URI, PORT} = require('./utils/config');
+const { MONGODB_URI, PORT } = require('./utils/config');
+// const nanoid = require('nanoid');
+// const code = nanoid(7);
+// console.log(code)
 
 mongoose.set('strictQuery', false);
 

@@ -9,10 +9,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default:false
     },
-    entries: {
+    ShortedURLs: {
         type:Array,
         default: [],
-        ref:"entry"
+        ref:"URLdata"
     },
     createdAt: {
         type: Date,
